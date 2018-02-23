@@ -1,0 +1,46 @@
+apply plugin: 'kotlin'
+apply plugin: 'java'
+
+// jitpack
+apply plugin: 'maven'
+
+buildscript {
+
+    ext.kotlinVersion = '1.2.30-eap-47'
+
+    repositories {
+        mavenCentral()
+        maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile 'com.github.cbeust:jcommander:1.71'
+    compile 'org.apache.commons:commons-compress:1.16.1'
+    compile 'com.github.JesusMcCloud:jtorctl:0'
+    compile 'io.github.microutils:kotlin-logging:1.4.9'
+    compile 'com.github.ravn:jsocks:567e1cd'
+}
+
+repositories {
+    mavenCentral()
+    maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
+    maven { setUrl("https://jitpack.io") }
+}
+
+allprojects {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+}
+
+task packageSources(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts { archives packageSources }
